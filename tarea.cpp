@@ -20,7 +20,7 @@ bool colaborador(string rut_colaborador, string* lut, int largo){
         for (int i = 0; i < largo; i++){
         if (string(rut_colaborador) == string(lut[i])) {
             return true;
-    }}
+   }}
    return false;
 }
 /*****
@@ -57,7 +57,7 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
             almuerzo[i] = s.saldo_almuerzo;
             once[i] = s.saldo_once;
             cena[i] = s.saldo_cena;
-        } 
+         } 
          saldos.close(); //Cerrar el archivo de saldos dado que ya no es necesario.
          int pos = 0;
          int saux = 0; // Se crea una variable para la posición y un auxiliar que identifica el numero de veces que se ha usado un servicio.
@@ -67,6 +67,14 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
                   pos = i;
                }}
             fstream consumo;
+            
+            consumo.open(consumos_dia, ios::in);
+            if (!consumo.is_open()){
+               consumo.open(consumos_dia, ios::out);
+               consumo.close();
+            } else {
+               consumo.close();
+            }
             switch (servicio){
 
                case 0:                  
@@ -90,7 +98,11 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
 
                         consumo.close();
                      }else{
-
+                        delete[] lut; 
+                        delete[] desayuno;
+                        delete[] almuerzo;
+                        delete[] once;
+                        delete[] cena;
                         return false;
                      }                     
                      }
@@ -115,6 +127,11 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
                         consumo << rut << " ALMUERZO" << endl;
                         consumo.close();
                      }else{
+                        delete[] lut; 
+                        delete[] desayuno;
+                        delete[] almuerzo;
+                        delete[] once;
+                        delete[] cena;
                         return false;
                      }
                      }
@@ -139,6 +156,11 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
                         consumo << rut << " ONCE" << endl;
                         consumo.close();
                      }else{
+                        delete[] lut; 
+                        delete[] desayuno;
+                        delete[] almuerzo;
+                        delete[] once;
+                        delete[] cena;
                         return false;
                      }
                      }
@@ -161,24 +183,29 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
                      if (cena[pos]-saux > 0){
                         consumo << rut << " CENA" << endl;
                         consumo.close();
-                     }else{                       
+                     }else{      
+                        delete[] lut; 
+                        delete[] desayuno;
+                        delete[] almuerzo;
+                        delete[] once;
+                        delete[] cena;                 
                         return false;
                      }
                      }
                      break;
                }
-          } else{
-            // Se evalua con saldo 0 en todos los servicios, por lo que no puede conseguir almuerzo.
+            } else{
+            // Se evalua con saldo 0 en todos los servicios, por lo que no puede comprar.
             return false;
-          }        
-          delete[] lut; //Borrar la memoria dinamica
-          delete[] desayuno;
-          delete[] almuerzo;
-          delete[] once;
-          delete[] cena;
-    } else {
+         }        
+         delete[] lut; //Borrar la memoria dinamica
+         delete[] desayuno;
+         delete[] almuerzo;
+         delete[] once;
+         delete[] cena;
+      } else {
         cout << "Error al abrir el archivo" << endl;
-    }
+   }
    saldos.close(); 
    return true;
 }
@@ -199,7 +226,7 @@ bool puedeConsumir(char* rut, int servicio, string consumos_dia){
 *****/
 
 int main() {
-   char rutt[11] = "22222222-2";
+   char rutt[11] = "06892664-9";
    cout << puedeConsumir(rutt, 0, "consumoDiario.txt") << endl;
    cout << puedeConsumir(rutt, 0, "consumoDiario.txt") << endl;
    cout << puedeConsumir(rutt, 0, "consumoDiario.txt") << endl;
@@ -214,5 +241,20 @@ int main() {
    cout << puedeConsumir(rutt, 2, "consumoDiario.txt") << endl;
    cout << puedeConsumir(rutt, 3, "consumoDiario.txt") << endl;
    cout << puedeConsumir(rutt, 3, "consumoDiario.txt") << endl;
+   char rutl[11] = "56937452-5";
+   cout << puedeConsumir(rutl, 0, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 0, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 0, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 0, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 0, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 1, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 1, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 1, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 2, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 2, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 2, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 2, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 3, "consumoDiario.txt") << endl;
+   cout << puedeConsumir(rutl, 3, "consumoDiario.txt") << endl;
    return 0;
 }
