@@ -16,7 +16,7 @@ int cant_p;
 
 int* comprarTarjeta(string nombre, int dia, int &m) {
     m = nombre.size();         // m es el largo del arreglo que se va a retornar
-    int* tarjeta = new int[m]; // crea un arreglo dinamico
+    int* tarjeta = new int[m]; // crea un arreglo dinamico de tamanio m
     for (int i = 0; i < m; i++) {
         tarjeta[i] = nombre[i] % dia;
     }
@@ -25,9 +25,9 @@ int* comprarTarjeta(string nombre, int dia, int &m) {
 }
 
 void intercambiarTarjeta(Persona* p1, Persona* p2) {
-    int* temp_tarjeta = p1->tarjeta;
+    int* tar = p1->tarjeta;
     p1->tarjeta = p2->tarjeta;
-    p2->tarjeta = temp_tarjeta;
+    p2->tarjeta = tar;
 }
 
 int puntaje(Persona* p1) {
@@ -49,7 +49,7 @@ bool tieneNumeroEnComun(Persona* p1, Persona* p2) {
     return false;
 }
 
-Persona* unDia(Persona* personas, int p, int dia) { 
+Persona* unDia(Persona* personas, int dia) { 
     for (int i = 0; i < cant_p; i++) {
         int n;
         personas[i].tarjeta = comprarTarjeta(personas[i].nombre, dia, n);
@@ -74,23 +74,22 @@ Persona* unDia(Persona* personas, int p, int dia) {
     } while (intercambio);
 
     Persona* ganador = &personas[0];
-    int max_puntaje = puntaje(ganador);
+    int puntaje_max = puntaje(ganador);
 
     for (int i = 1; i < cant_p; i++) {
         int puntaje_actual = puntaje(&personas[i]);
-        if (puntaje_actual > max_puntaje) {
+        if (puntaje_actual > puntaje_max) {
             ganador = &personas[i];
-            max_puntaje = puntaje_actual;
+            puntaje_max = puntaje_actual;
         }
     }
-
     return ganador;
 }
 
-void variosDias(Persona* personas, int p, int cant_dias) {
+void variosDias(Persona* personas, int cant_dias) {
     for (int dia = 1; dia <= cant_dias; dia++) {
-        Persona* ganador = unDia(personas, p, dia);
-        cout << "Dia: " << dia << " - Ganador: " << ganador->nombre << " - Fecha de nacimiento: " << ganador->fecha<< " " << puntaje(ganador) << endl;
+        Persona* ganador = unDia(personas, dia);
+        cout <<ganador->nombre << "Dia: " << dia << " - Ganador: " << ganador->nombre << " - Fecha de nacimiento: " << ganador->fecha<< " " << puntaje(ganador) << endl;
     }
 }
 
@@ -106,9 +105,9 @@ int main() {
     }
 
     int cant_dias;
-    cin >> cant_dias;
+    cant_dias=2;
 
-    variosDias(personas, cant_p, cant_dias);
+    variosDias(personas, cant_dias);
 
     for (int i = 0; i < cant_p; i++) {
         delete[] personas[i].tarjeta;
