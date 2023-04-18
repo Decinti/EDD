@@ -29,11 +29,10 @@ int cant_p; //variable global que va a almacenar la cantidad de personas ingresa
 int* comprarTarjeta(string nombre, int dia, int &m) {
     m = nombre.size();         // m es el largo del arreglo que se va a retornar
     int* tarjeta = new int[m]; // crea un arreglo dinamico de tamanio m
-    cout<<"tamanio del arreglo: "<< m <<endl;
-    cout<<nombre<<": ";
     for (int i = 0; i < m; i++) { 
         tarjeta[i] = nombre[i] % dia;
         cout<< nombre[i] % dia <<" ";
+
     }
     cout<<"\n";
     return tarjeta;
@@ -52,13 +51,25 @@ int* comprarTarjeta(string nombre, int dia, int &m) {
 * TipoRetorno, Descripción retorno
 *****/
 void intercambiarTarjeta(Persona* p1, Persona* p2) { //intercambia los valores de las tarjetas
-    int* tar = p1->tarjeta;
+    int* tarjetaux = p1->tarjeta;
     p1->tarjeta = p2->tarjeta;
-    p2->tarjeta = tar;
+    p2->tarjeta = tarjetaux;
+    cout<<"ha habido intercambio entre "<<p1->nombre<<" y "<<p2->nombre<<endl;
+    
     // Intercambiar tamaños de las tarjetas
-    int temp_tamanio = p1->tamanio_tarjeta;
+    int tamanioux = p1->tamanio_tarjeta;
     p1->tamanio_tarjeta = p2->tamanio_tarjeta;
-    p2->tamanio_tarjeta = temp_tamanio;
+    p2->tamanio_tarjeta = tamanioux;
+    cout<<p1->nombre<<": ";
+    for (int i=0; i<p1->tamanio_tarjeta ; i++){
+        cout<<p1->tarjeta[i]<<" ";
+    }
+    cout<<"\n";
+    cout<<p2->nombre<<": ";
+    for (int j=0; j<p2->tamanio_tarjeta ; j++){
+        cout<<p2->tarjeta[j]<<" ";
+    }
+    cout<<"\n";
 }
 
 /*****
@@ -76,8 +87,9 @@ void intercambiarTarjeta(Persona* p1, Persona* p2) { //intercambia los valores d
 int puntaje(Persona* p1) {
     int resultado = 0;
     for (int i = 0; i < p1->tamanio_tarjeta; i++) {
-        resultado += p1->tarjeta[i] * (p1->fecha[i % 10] - '0'); // se le resta '0' para que devuelva el valor de la resta 
-    }                                                            // de los valores ASCII 
+        resultado += p1->tarjeta[i] * (p1->fecha[i % 10]); // se le resta '0' para que devuelva el valor de la resta 
+    }
+    cout<<"el puntaje de "<<p1->nombre<<" es: "<<resultado<<endl;                                                            // de los valores ASCII 
     return resultado;
 }
 
@@ -141,7 +153,7 @@ Persona* unDia(Persona* personas, int dia) {
                 for (int j = 0; j < cant_p; j++) {
                     if (i != j && personas[j].quiere_intercambiar == 1 && tieneNumeroEnComun(&personas[i], &personas[j])) {
                         intercambiarTarjeta(&personas[i], &personas[j]);
-                        personas[i].quiere_intercambiar = false;
+                        personas[i].quiere_intercambiar = false; //encontrar una forma de devolverlo a verdadero al cambiar el dia
                         intercambio = true;
                         break;
                     }
@@ -181,7 +193,6 @@ void variosDias(Persona* personas, int cant_dias) {
         cout <<"El ganador es: "<<ganador->nombre <<" "<< ganador->fecha << " " << puntaje(ganador) << endl;
     }
 }
-
 
 int main() {
     cout<<"cantidad de personas: "<<endl;
