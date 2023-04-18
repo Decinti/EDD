@@ -12,32 +12,87 @@ struct Persona {
     bool quiere_intercambiar;
 };
 
-int cant_p;
+int cant_p; //variable global que va a almacenar la cantidad de personas ingresadas
 
+/*****
+* TipoFunción NombreFunción
+******
+* Resumen Función:
+******
+* Input:
+* tipoParámetro NombreParámetro : Descripción Parámetro
+* .......
+******
+* Returns:
+* TipoRetorno, Descripción retorno
+*****/
 int* comprarTarjeta(string nombre, int dia, int &m) {
     m = nombre.size();         // m es el largo del arreglo que se va a retornar
     int* tarjeta = new int[m]; // crea un arreglo dinamico de tamanio m
-    for (int i = 0; i < m; i++) {
+    cout<<"tamanio del arreglo: "<< m <<endl;
+    cout<<nombre<<": ";
+    for (int i = 0; i < m; i++) { 
         tarjeta[i] = nombre[i] % dia;
+        cout<< nombre[i] % dia <<" ";
     }
-
+    cout<<"\n";
     return tarjeta;
 }
 
-void intercambiarTarjeta(Persona* p1, Persona* p2) {
+/*****
+* TipoFunción NombreFunción
+******
+* Resumen Función
+******
+* Input:
+* tipoParámetro NombreParámetro : Descripción Parámetro
+* .......
+******
+* Returns:
+* TipoRetorno, Descripción retorno
+*****/
+void intercambiarTarjeta(Persona* p1, Persona* p2) { //intercambia los valores de las tarjetas
     int* tar = p1->tarjeta;
     p1->tarjeta = p2->tarjeta;
     p2->tarjeta = tar;
+    // Intercambiar tamaños de las tarjetas
+    int temp_tamanio = p1->tamanio_tarjeta;
+    p1->tamanio_tarjeta = p2->tamanio_tarjeta;
+    p2->tamanio_tarjeta = temp_tamanio;
 }
 
+/*****
+* TipoFunción NombreFunción
+******
+* Resumen Función
+******
+* Input:
+* tipoParámetro NombreParámetro : Descripción Parámetro
+* .......
+******
+* Returns:
+* TipoRetorno, Descripción retorno
+*****/
 int puntaje(Persona* p1) {
     int resultado = 0;
     for (int i = 0; i < p1->tamanio_tarjeta; i++) {
-        resultado += p1->tarjeta[i] * (p1->fecha[i % 10] - '0');
-    }
+        resultado += p1->tarjeta[i] * (p1->fecha[i % 10] - '0'); // se le resta '0' para que devuelva el valor de la resta 
+    }                                                            // de los valores ASCII 
     return resultado;
 }
 
+/*****
+* TipoFunción NombreFunción
+******
+* Resumen Función
+******
+* Input:
+* tipoParámetro NombreParámetro : Descripción Parámetro
+* .......
+******
+* Returns:
+* TipoRetorno, Descripción retorno
+*****/
 bool tieneNumeroEnComun(Persona* p1, Persona* p2) {
     for (int i = 0; i < p1->tamanio_tarjeta; i++) {
         for (int j = 0; j < p2->tamanio_tarjeta; j++) {
@@ -49,12 +104,34 @@ bool tieneNumeroEnComun(Persona* p1, Persona* p2) {
     return false;
 }
 
+/*****
+* TipoFunción NombreFunción
+******
+* Resumen Función
+******
+* Input:
+* tipoParámetro NombreParámetro : Descripción Parámetro
+* .......
+******
+* Returns:
+* TipoRetorno, Descripción retorno
+*****/
 Persona* unDia(Persona* personas, int dia) { 
     for (int i = 0; i < cant_p; i++) {
         int n;
         personas[i].tarjeta = comprarTarjeta(personas[i].nombre, dia, n);
         personas[i].tamanio_tarjeta = n;
     }
+
+    /*for (int j=0 ; j<cant_p ; j++){
+        cout<<personas[j].nombre<<": ";
+        cout<<"[";
+        for (int i=0 ; i< ; i++){
+            cout<< personas[j].tarjeta[i] <<", ";
+        }
+        cout<<"]";
+        cout<<"\n";     
+    }*/
 
     bool intercambio;
     do {
@@ -86,10 +163,22 @@ Persona* unDia(Persona* personas, int dia) {
     return ganador;
 }
 
+/*****
+* TipoFunción NombreFunción
+******
+* Resumen Función
+******
+* Input:
+* tipoParámetro NombreParámetro : Descripción Parámetro
+* .......
+******
+* Returns:
+* TipoRetorno, Descripción retorno
+*****/
 void variosDias(Persona* personas, int cant_dias) {
     for (int dia = 1; dia <= cant_dias; dia++) {
         Persona* ganador = unDia(personas, dia);
-        cout <<ganador->nombre << "Dia: " << dia << " - Ganador: " << ganador->nombre << " - Fecha de nacimiento: " << ganador->fecha<< " " << puntaje(ganador) << endl;
+        cout <<"El ganador es: "<<ganador->nombre <<" "<< ganador->fecha << " " << puntaje(ganador) << endl;
     }
 }
 
