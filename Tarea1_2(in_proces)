@@ -199,7 +199,7 @@ void variosDias(Persona* personas, int cant_dias) {
 * int, Retorna 0 si el programa se ejecuta correctamente.
 *****/
 int main() {
-    int cant_p=4; // Cantidad de personas
+    cant_p=4; // Cantidad de personas (variable global)
     int cant_dias=2; // Cantidad de dias
     Persona* personas = new Persona[cant_p];
     for (int i = 0; i < cant_p; i++) { // Se establecen los elementos del arreglo personas.
