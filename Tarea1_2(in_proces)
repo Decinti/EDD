@@ -16,97 +16,86 @@ int cant_p; //variable global que va a almacenar la cantidad de personas ingresa
 int a=0; //variable global para crear solo UNA VEZ un arreglo con los valores de personas.quiere_intercambiar
 
 /*****
-* TipoFunción NombreFunción
+* int* comprarTarjeta
 ******
-* Resumen Función:
+* Resumen Función: Genera y compra una tarjeta basandose en el nombre y el dia.
 ******
 * Input:
-* tipoParámetro NombreParámetro : Descripción Parámetro
-* .......
+* string nombre : El nombre de la persona.
+* int dia : El dia en que se compra la tarjeta.
+* int &m : Referencia al tamaño de la tarjeta generada.
 ******
 * Returns:
-* TipoRetorno, Descripción retorno
+* int*, Un puntero al arreglo de enteros que representa la tarjeta comprada.
 *****/
 int* comprarTarjeta(string nombre, int dia, int &m) {
-    m = nombre.size();         // m es el largo del arreglo que se va a retornar
+    m = nombre.size();
     int* tarjeta = new int[m]; // crea un arreglo dinamico de tamanio m
     for (int i = 0; i < m; i++) { 
         tarjeta[i] = nombre[i] % dia;
-        cout<< nombre[i] % dia <<" ";
-
     }
-    cout<<"\n";
     return tarjeta;
 }
 
 /*****
-* TipoFunción NombreFunción
+* void intercambiarTarjeta
 ******
-* Resumen Función
+* Resumen Función:
+* Intercambia las tarjetas y sus tamaños entre dos personas.
 ******
 * Input:
-* tipoParámetro NombreParámetro : Descripción Parámetro
-* .......
+* Persona* p1 : Un puntero a la primera persona.
+* Persona* p2 : un puntero a la segunda persona.
 ******
 * Returns:
-* TipoRetorno, Descripción retorno
+* Esta funcion no retorna nada, solo ejecuta acciones. 
 *****/
-void intercambiarTarjeta(Persona* p1, Persona* p2) { //intercambia los valores de las tarjetas
+void intercambiarTarjeta(Persona* p1, Persona* p2) { 
     int* tarjetaux = p1->tarjeta;
+    // Intercambia las tarjetas
     p1->tarjeta = p2->tarjeta;
-    p2->tarjeta = tarjetaux;
-    cout<<"ha habido intercambio entre "<<p1->nombre<<" y "<<p2->nombre<<endl;
-    
-    // Intercambiar tamaños de las tarjetas
+    p2->tarjeta = tarjetaux;   
+    // Intercambiar los tamaños de las tarjetas
     int tamanioux = p1->tamanio_tarjeta;
     p1->tamanio_tarjeta = p2->tamanio_tarjeta;
     p2->tamanio_tarjeta = tamanioux;
-    cout<<p1->nombre<<": ";
-    for (int i=0; i<p1->tamanio_tarjeta ; i++){
-        cout<<p1->tarjeta[i]<<" ";
-    }
-    cout<<"\n";
-    cout<<p2->nombre<<": ";
-    for (int j=0; j<p2->tamanio_tarjeta ; j++){
-        cout<<p2->tarjeta[j]<<" ";
-    }
-    cout<<"\n";
 }
 
 /*****
-* TipoFunción NombreFunción
+* int puntaje
 ******
-* Resumen Función
+* Resumen Función:
+* Calcula el puntaje de una persona basandose en su tarjeta y fecha.
 ******
 * Input:
-* tipoParámetro NombreParámetro : Descripción Parámetro
-* .......
+* Persona* p1 : Un puntero a la persona cuyo puntaje sera calculado.
 ******
 * Returns:
-* TipoRetorno, Descripción retorno
+* int, El resultado del puntaje de la persona.
 *****/
 int puntaje(Persona* p1) {
     int resultado = 0;
     for (int i = 0; i < p1->tamanio_tarjeta; i++) {
-        resultado += p1->tarjeta[i] * (p1->fecha[i % 10]);  
+        resultado += p1->tarjeta[i] * (p1->fecha[i % 10]);
     }
-    cout<<"el puntaje de "<<p1->nombre<<" es: "<<resultado<<endl;                                                            // de los valores ASCII 
     return resultado;
 }
 
 /*****
-* TipoFunción NombreFunción
+* bool tiene NumeroEnComun
 ******
-* Resumen Función
+* Resumen Función: 
+* Verifica si dos personas tienen al menos un numero en comun en sus tarjetas.
 ******
 * Input:
-* tipoParámetro NombreParámetro : Descripción Parámetro
-* .......
+* Persona* p1 : Un puntero a la primera persona.
+* Persona* p2 : Un puntero a la segunda persona.
 ******
 * Returns:
-* TipoRetorno, Descripción retorno
+* bool, Retorna verdadero si tienen al menos un numero en comun y falso en caso contrario.
 *****/
 bool tieneNumeroEnComun(Persona* p1, Persona* p2) {
+    // Recorre las tarjetas de las dos personas.
     for (int i = 0; i < p1->tamanio_tarjeta; i++) {
         for (int j = 0; j < p2->tamanio_tarjeta; j++) {
             if (p1->tarjeta[i] == p2->tarjeta[j]) {
@@ -118,35 +107,34 @@ bool tieneNumeroEnComun(Persona* p1, Persona* p2) {
 }
 
 /*****
-* TipoFunción NombreFunción
+* Persona* unDia
 ******
-* Resumen Función
+* Resumen Función:
+* Simula un dia de intercambio de tarjetas y determina el ganador del dia
 ******
 * Input:
-* tipoParámetro NombreParámetro : Descripción Parámetro
-* .......
+* Persona* personas: Un puntero al arreglo de personas.
+* int dia : El dia actual de la simulacion.
 ******
 * Returns:
-* TipoRetorno, Descripción retorno
+* Persona*, Un puntero a la persona ganadora del dia. 
 *****/
 Persona* unDia(Persona* personas, int dia) { 
-    
-    
     for (int i = 0; i < cant_p; i++) {
         int n;
-        personas[i].tarjeta = comprarTarjeta(personas[i].nombre, dia, n);
-        personas[i].tamanio_tarjeta = n;
+        personas[i].tarjeta = comprarTarjeta(personas[i].nombre, dia, n); // Le da una tarjeta (arreglo de enteros) a cada persona
+        personas[i].tamanio_tarjeta = n; //asigna el tamaño del arreglo a cada persona
     }
 
     bool intercambio;
     do {
-        intercambio = false;
-        for (int i = 0; i < cant_p; i++) {
+        intercambio = false; // Si este bool se mantiene falso es porque nadie quiere intercambiar.
+        for (int i = 0; i < cant_p; i++) { // Revisa persona por persona si quiere intercambiar.
             if (personas[i].quiere_intercambiar == 1) {
                 for (int j = 0; j < cant_p; j++) {
                     if (i != j && personas[j].quiere_intercambiar == 1 && tieneNumeroEnComun(&personas[i], &personas[j])) {
                         intercambiarTarjeta(&personas[i], &personas[j]);
-                        personas[i].quiere_intercambiar = 0; //encontrar una forma de devolverlo a verdadero al cambiar el dia
+                        personas[i].quiere_intercambiar = 0; //La persona[i], que ya cambio, ahora ya no querra cambiar hasta el siguiente dia.
                         intercambio = true;
                         break;
                     }
@@ -158,7 +146,7 @@ Persona* unDia(Persona* personas, int dia) {
     Persona* ganador = &personas[0];
     int puntaje_max = puntaje(ganador);
 
-    for (int i = 1; i < cant_p; i++) {
+    for (int i = 1; i < cant_p; i++) { // Compara los puntajes de las personas. 
         int puntaje_actual = puntaje(&personas[i]);
         if (puntaje_actual > puntaje_max) {
             ganador = &personas[i];
@@ -169,53 +157,56 @@ Persona* unDia(Persona* personas, int dia) {
 }
 
 /*****
-* TipoFunción NombreFunción
+* void variosDias
 ******
-* Resumen Función
+* Resumen Función:
+* Simula varios dias de intercambios de tarjetas y muestra los ganadores de cada dia.
 ******
 * Input:
-* tipoParámetro NombreParámetro : Descripción Parámetro
-* .......
+* Persona* personas : Un puntero al arreglo de personas.
+* int cant_dias : La cantidad de dias a simular.
 ******
 * Returns:
-* TipoRetorno, Descripción retorno
+* Esta funcion no retorna nada, solo ejecuta acciones. 
 *****/
 void variosDias(Persona* personas, int cant_dias) {
     int* los_intercambiar = new int[cant_p];
-    if (a==0){ //va a entrar solamente una vez
+    if (a==0){ // Crea un arreglo para restablecer los valores de "quiere_intercambiar" despues de cada dia
         a=1;
         for (int i=0 ; i<cant_p ; i++){
             los_intercambiar[i]=personas[i].quiere_intercambiar;
             cout<<los_intercambiar[i];
         }
-        cout<<"\n";
     }
     for (int dia = 1; dia <= cant_dias; dia++) {
         Persona* ganador = unDia(personas, dia);
         cout <<"El ganador es: "<<ganador->nombre <<" "<< ganador->fecha << " " << puntaje(ganador) << endl;
-        for (int i=0 ; i<cant_p; i++){
+        for (int i=0 ; i<cant_p; i++){ // Se restablecen los valores de "quiere_intercambiar" para cada persona.
             personas[i].quiere_intercambiar=los_intercambiar[i];
             cout<<personas[i].quiere_intercambiar;
         }
-        cout<<"\n";
     }
 }
-
+/*****
+* int main
+******
+* Resumen Función:
+* Es la funcion principal que ejecuta el programa, toma las entradas, realiza las simulaciones y muestra los resultados
+******
+* Input:
+* Esta funcion no posee inputs de entrada.
+******
+* Returns:
+* int, Retorna 0 si el programa se ejecuta correctamente.
+*****/
 int main() {
-    cout<<"cantidad de personas: "<<endl;
-    cin >> cant_p;
-
+    int cant_p=4; // Cantidad de personas
+    int cant_dias=2; // Cantidad de dias
     Persona* personas = new Persona[cant_p];
-
-    for (int i = 0; i < cant_p; i++) {
+    for (int i = 0; i < cant_p; i++) { // Se establecen los elementos del arreglo personas.
         cin >> personas[i].nombre >> personas[i].fecha >> personas[i].quiere_intercambiar;
     }
-
-    int cant_dias;
-    cant_dias=2;
-
     variosDias(personas, cant_dias);
-
     for (int i = 0; i < cant_p; i++) {
         delete[] personas[i].tarjeta;
     }
