@@ -182,7 +182,6 @@ void variosDias(Persona* personas, int cant_dias) {
         cout <<"El ganador es: "<<ganador->nombre <<" "<< ganador->fecha << " " << puntaje(ganador) << endl;
         for (int i=0 ; i<cant_p; i++){ // Se restablecen los valores de "quiere_intercambiar" para cada persona.
             personas[i].quiere_intercambiar=los_intercambiar[i];
-            cout<<personas[i].quiere_intercambiar;
         }
     }
 }
