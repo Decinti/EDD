@@ -175,7 +175,6 @@ void variosDias(Persona* personas, int cant_dias) {
         a=1;
         for (int i=0 ; i<cant_p ; i++){
             los_intercambiar[i]=personas[i].quiere_intercambiar;
-            cout<<los_intercambiar[i];
         }
     }
     for (int dia = 1; dia <= cant_dias; dia++) {
