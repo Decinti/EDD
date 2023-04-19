@@ -13,6 +13,7 @@ struct Persona {
 };
 
 int cant_p; //variable global que va a almacenar la cantidad de personas ingresadas
+int a=0; //variable global para crear solo UNA VEZ un arreglo con los valores de personas.quiere_intercambiar
 
 /*****
 * TipoFunción NombreFunción
@@ -87,7 +88,7 @@ void intercambiarTarjeta(Persona* p1, Persona* p2) { //intercambia los valores d
 int puntaje(Persona* p1) {
     int resultado = 0;
     for (int i = 0; i < p1->tamanio_tarjeta; i++) {
-        resultado += p1->tarjeta[i] * (p1->fecha[i % 10]); // se le resta '0' para que devuelva el valor de la resta 
+        resultado += p1->tarjeta[i] * (p1->fecha[i % 10]);  
     }
     cout<<"el puntaje de "<<p1->nombre<<" es: "<<resultado<<endl;                                                            // de los valores ASCII 
     return resultado;
@@ -129,21 +130,13 @@ bool tieneNumeroEnComun(Persona* p1, Persona* p2) {
 * TipoRetorno, Descripción retorno
 *****/
 Persona* unDia(Persona* personas, int dia) { 
+    
+    
     for (int i = 0; i < cant_p; i++) {
         int n;
         personas[i].tarjeta = comprarTarjeta(personas[i].nombre, dia, n);
         personas[i].tamanio_tarjeta = n;
     }
-
-    /*for (int j=0 ; j<cant_p ; j++){
-        cout<<personas[j].nombre<<": ";
-        cout<<"[";
-        for (int i=0 ; i< ; i++){
-            cout<< personas[j].tarjeta[i] <<", ";
-        }
-        cout<<"]";
-        cout<<"\n";     
-    }*/
 
     bool intercambio;
     do {
@@ -153,7 +146,7 @@ Persona* unDia(Persona* personas, int dia) {
                 for (int j = 0; j < cant_p; j++) {
                     if (i != j && personas[j].quiere_intercambiar == 1 && tieneNumeroEnComun(&personas[i], &personas[j])) {
                         intercambiarTarjeta(&personas[i], &personas[j]);
-                        personas[i].quiere_intercambiar = false; //encontrar una forma de devolverlo a verdadero al cambiar el dia
+                        personas[i].quiere_intercambiar = 0; //encontrar una forma de devolverlo a verdadero al cambiar el dia
                         intercambio = true;
                         break;
                     }
@@ -188,9 +181,23 @@ Persona* unDia(Persona* personas, int dia) {
 * TipoRetorno, Descripción retorno
 *****/
 void variosDias(Persona* personas, int cant_dias) {
+    int* los_intercambiar = new int[cant_p];
+    if (a==0){ //va a entrar solamente una vez
+        a=1;
+        for (int i=0 ; i<cant_p ; i++){
+            los_intercambiar[i]=personas[i].quiere_intercambiar;
+            cout<<los_intercambiar[i];
+        }
+        cout<<"\n";
+    }
     for (int dia = 1; dia <= cant_dias; dia++) {
         Persona* ganador = unDia(personas, dia);
         cout <<"El ganador es: "<<ganador->nombre <<" "<< ganador->fecha << " " << puntaje(ganador) << endl;
+        for (int i=0 ; i<cant_p; i++){
+            personas[i].quiere_intercambiar=los_intercambiar[i];
+            cout<<personas[i].quiere_intercambiar;
+        }
+        cout<<"\n";
     }
 }
 
