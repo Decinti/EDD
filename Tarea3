@@ -1,0 +1,96 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+#define N 32
+
+struct Usuario{
+    string user;
+    string pass;
+};
+
+
+class Login{
+    private:
+        Usuario tabla[N];
+
+
+        int hashInsert(Usuario tabla[], string pass, string user);
+
+        int h(string pass);
+    public:
+        Login(){
+            //
+        }
+
+        bool iniciar_sesion(string usuario, string clave);
+        
+        bool crean_nuevo_usuario(string usuario, string clave);
+
+        bool cambiar_clave(string usuario, string nueva_clave);
+
+};
+
+
+//Funciones Privates:
+
+int Login::hashInsert(Usuario tabla[], string pass, string user){
+    //
+    int pos = h(pass);
+    for (int i=0; )
+};
+
+// Funcion de hashing
+int Login::h(string pass){
+    int sum;
+    for (int i=0 ; i < pass.lenght() ; i++){
+        cout<<pass[i]<<endl;
+        sum += pass[i];
+    }
+    sum = sum % N;
+    return sum;
+};
+
+int Login::p(string pass, string user){
+    int sum=0;
+    int 
+};
+
+
+
+//Funciones Public
+bool Login::iniciar_sesion(string usuario, string clave){
+    //
+};
+        
+bool Login::crean_nuevo_usuario(string usuario, string clave){
+    //
+};
+
+
+bool Login::cambiar_clave(string usuario, string nueva_clave){
+    //
+}
+
+
+
+
+
+
+
+
+int main(){
+    Login basedatos;
+    string opcion;
+    string usuario;
+    string pass;
+    cout << "ingrese una opcion (iniciar_sesion / registrarse / actualizar_contraseña):"<<endl;
+    cin >> opcion;
+    cout << "username: ";
+    cin >> usuario;
+    cout << "password: ";
+    cin >> pass;
+    
+    return 0;
+}
